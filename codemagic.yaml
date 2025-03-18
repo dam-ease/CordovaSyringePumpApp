@@ -20,38 +20,38 @@ workflows:
         script: | 
           npm install
           npm install -g cordova
-      # -  name: Setup Cordova iOS platform
-      #    script: | 
-      #      ionic cordova platform remove ios --nosave
-      #      ionic cordova platform add ios \
-      #        --confirm \
-      #        --no-interactive \
-      #        --noresources \
-      #        --save
+      -  name: Setup Cordova iOS platform
+         script: | 
+           cordova platform remove ios --nosave
+           cordova platform add ios \
+             --confirm \
+             --no-interactive \
+             --noresources \
+             --save
       - name: Set up code signing settings on Xcode project
         script: | 
           xcode-project use-profiles --project platforms/ios/CordovaSyringePumpApp.xcodeproj
       - name: Build ipa for distribution
         script: | 
-          
-          # package_type=$(defaults read /Users/builder/export_options.plist method)
-          # identity=$(defaults read /Users/builder/export_options.plist signingCertificate)
-          # team=$(defaults read /Users/builder/export_options.plist teamID)
-          # profile=$(find '/Users/builder/Library/MobileDevice/Provisioning Profiles' -name "*.mobileprovision")
-          # profile_uuid=$(grep UUID -A1 -a "$profile" | grep -io "[-A-F0-9]\{36\}")
+          cat /Users/builder/export_options.plist
+          package_type=$(defaults read /Users/builder/export_options.plist method)
+          identity=$(defaults read /Users/builder/export_options.plist signingCertificate)
+          team=$(defaults read /Users/builder/export_options.plist teamID)
+          profile=$(find '/Users/builder/Library/MobileDevice/Provisioning Profiles' -name "*.mobileprovision")
+          profile_uuid=$(grep UUID -A1 -a "$profile" | grep -io "[-A-F0-9]\{36\}")
 
-          # cat <<EOF > build.json
-          # {
-          #   "ios": {
-          #     "release": {
-          #       "codeSignIdentity": "$identity",
-          #       "developmentTeam": "$team",
-          #       "packageType": "$package_type",
-          #       "provisioningProfile": "$profile_uuid"
-          #     }
-          #   }
-          # }EOF
-          cordova build ios --release
+          cat <<EOF > build.json
+          {
+            "ios": {
+              "release": {
+                "codeSignIdentity": "$identity",
+                "developmentTeam": "$team",
+                "packageType": "$package_type",
+                "provisioningProfile": "$profile_uuid"
+              }
+            }
+          }EOF
+          cordova build ios --release --device --buildConfig='build.json'
     artifacts:
       - /Users/builder/clone/platforms/ios/build/device/*.ipa
       - /tmp/xcodebuild_logs/*.log 
