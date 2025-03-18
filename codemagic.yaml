@@ -9,8 +9,6 @@ workflows:
         - ios_credentials
         - appstore_credentials
       ios_signing:
-        # distribution_type: app_store
-        # bundle_identifier: com.example.syringePumpApp
         provisioning_profiles:
           - Syringe_App
         certificates:
@@ -40,12 +38,6 @@ workflows:
           profile=$(find '/Users/builder/Library/MobileDevice/Provisioning Profiles' -name "*.mobileprovision")
           profile_uuid=$(grep UUID -A1 -a "$profile" | grep -io "[-A-F0-9]\{36\}")
 
-          echo $package_type
-          echo $identity
-          echo $team
-          echo $profile
-          echo $profile_uuid
-
           cat > build.json <<EOF
           {
             "ios": {
@@ -58,8 +50,6 @@ workflows:
             }
           }
           EOF
-          cat build.json
-          echo "About to build"
           cordova build ios --release --device --buildConfig='build.json'
     artifacts:
       - /Users/builder/clone/platforms/ios/build/Release-iphoneos/CordovaSyringePumpApp.ipa
@@ -67,7 +57,11 @@ workflows:
     publishing:
       email:
         recipients:
-          - alimidammy02@gmail.com
+          - user_1@example.com
+          - user_2@example.com
         notify:
           success: true
           failure: false
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
