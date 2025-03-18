@@ -62,7 +62,7 @@ workflows:
           echo "About to build"
           cordova build ios --release --device --buildConfig='build.json'
     artifacts:
-      - /Users/builder/clone/platforms/ios/build/device/*.ipa
+      - /Users/builder/clone/platforms/ios/build/Release-iphoneos/CordovaSyringePumpApp.ipa
       - /tmp/xcodebuild_logs/*.log 
     publishing:
       email:
