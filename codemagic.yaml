@@ -46,7 +46,7 @@ workflows:
           echo $profile
           echo $profile_uuid
 
-          cat <<EOF > build.json
+          cat > build.json <<EOF
           {
             "ios": {
               "release": {
@@ -56,7 +56,8 @@ workflows:
                 "provisioningProfile": "$profile_uuid"
               }
             }
-          }EOF
+          }
+          EOF
           cat build.json
           echo "About to build"
           cordova build ios --release --device --buildConfig='build.json'
