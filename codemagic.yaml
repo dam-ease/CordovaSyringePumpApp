@@ -40,6 +40,12 @@ workflows:
           profile=$(find '/Users/builder/Library/MobileDevice/Provisioning Profiles' -name "*.mobileprovision")
           profile_uuid=$(grep UUID -A1 -a "$profile" | grep -io "[-A-F0-9]\{36\}")
 
+          echo $package_type
+          echo $identity
+          echo $team
+          echo $profile
+          echo $profile_uuid
+          
           cat <<EOF > build.json
           {
             "ios": {
