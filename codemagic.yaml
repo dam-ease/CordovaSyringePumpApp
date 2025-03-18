@@ -5,6 +5,9 @@ workflows:
     integrations:
       app_store_connect: Codemagic
     environment:
+      groups:
+        - ios_credentials
+        - appstore_credentials
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.example.syringePumpApp
