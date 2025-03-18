@@ -9,8 +9,12 @@ workflows:
         - ios_credentials
         - appstore_credentials
       ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.example.syringePumpApp
+        # distribution_type: app_store
+        # bundle_identifier: com.example.syringePumpApp
+        provisioning_profiles:
+          - Syringe_App
+        certificates:
+          - iOS_Distribution_Certificate
     scripts:
       - name: Install npm dependencies and update Cordova version
         script: | 
@@ -26,7 +30,7 @@ workflows:
       #        --save
       - name: Set up code signing settings on Xcode project
         script: | 
-          xcode-project use-profiles
+          xcode-project use-profiles --project platforms/ios/CordovaSyringePumpApp.xcodeproj
       - name: Build ipa for distribution
         script: | 
           package_type=$(defaults read ~/export_options.plist method)
